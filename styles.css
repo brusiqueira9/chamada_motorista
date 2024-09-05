@@ -1,0 +1,190 @@
+/* Importando a fonte Roboto do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative; /* Adicionado para o posicionamento absoluto do background */
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0; /* Coloca o background atrás do conteúdo */
+    background-image: url('assets/background.jpeg'); 
+    background-size: cover; /* Faz a imagem cobrir todo o container */
+    background-position: center; /* Centraliza a imagem */
+    opacity: 1; /* Ajusta a opacidade do background (0 a 1) */
+}
+
+
+.main-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    background-color: #ffffff;
+    position: relative; /* Para manter a ordem correta no z-index */
+    z-index: 1; /* Para garantir que o conteúdo fique acima do background */
+}
+
+.main-title {
+    color: #116837; /* Cor verde */
+    margin-bottom: 20px; /* Espaçamento abaixo do título */
+    font-weight: 700; /* Negrito */
+    font-size: 28px; /* Tamanho da fonte */
+    text-align: center; /* Centraliza o texto */
+}
+
+.container, .list-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    margin: 10px;
+    transition: transform 0.2s;
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .container, .list-container {
+        width: 90%; /* Ajuste a largura em telas menores */
+    }
+}
+
+.container:hover, .list-container:hover {
+    transform: scale(1.02); /* Efeito de zoom ao passar o mouse */
+}
+
+h1 {
+    color: #116837;
+    margin-bottom: 20px;
+    font-weight: 700;
+    font-size: 24px; /* Tamanho de fonte maior para o título */
+}
+
+h2 {
+    color: #116837;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: 500;
+}
+
+input[type="text"], select {
+    width: 100%;
+    padding: 12px; /* Aumenta o padding para mais conforto */
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s; /* Adiciona transição ao box-shadow */
+}
+
+input[type="text"]:focus, select:focus {
+    border-color: #116837;
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.5); /* Aumenta o efeito de sombra */
+    outline: none;
+}
+
+button {
+    background-color: #116837;
+    color: white;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.3s, transform 0.2s; /* Adiciona transição no botão */
+}
+
+button:hover {
+    background-color: #218838;
+    transform: translateY(-2px); /* Leve efeito de elevação ao passar o mouse */
+}
+
+#lastCalls {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 10px;
+    max-height: 200px; /* Limita a altura da lista */
+    overflow-y: auto;  /* Adiciona rolagem se necessário */
+}
+
+#lastCalls li {
+    padding: 12px 0; /* Aumenta o padding dos itens da lista */
+    border-bottom: 1px solid #ddd;
+    color: #333;
+}
+
+#lastCalls li strong {
+    display: block; /* Coloca o texto em uma nova linha */
+    margin-bottom: 5px; /* Espaçamento abaixo do texto em negrito */
+    font-weight: 700; /* Negrito mais forte */
+}
+
+#lastCalls li:nth-child(even) {
+    background-color: #f8f9fa; /* Cor de fundo alternada para a lista */
+}
+
+#lastCalls li:hover {
+    background-color: #e2e6ea; /* Efeito de destaque ao passar o mouse */
+}
+
+#lastCalls button {
+    background-color: #116837; /* Cor verde */
+    color: white;
+    padding: 5px 10px; /* Dimensões menores */
+    border: none;
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer;
+    font-size: 14px; /* Tamanho da fonte menor */
+    transition: background-color 0.3s, transform 0.2s; /* Efeito de transição */
+}
+
+#lastCalls button:hover {
+    background-color: #218838; /* Cor mais escura ao passar o mouse */
+}
+
+#clearListButton {
+    background-color: #dc3545; /* Cor vermelha */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#clearListButton:hover {
+    background-color: #c82333; /* Cor vermelha mais escura ao passar o mouse */
+}
