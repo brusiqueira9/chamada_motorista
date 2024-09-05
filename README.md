@@ -1,4 +1,4 @@
-Chamada de Motorista
+Chamada de Motorista 
 
 Este é um projeto de uma aplicação web que realiza chamadas para motoristas utilizando voz de IA. A aplicação permite ao usuário informar o nome do motorista, a placa do veículo, a ação (carregamento ou descarga) e selecionar uma voz em português do Brasil para fazer o anúncio. Além disso, a aplicação armazena os últimos chamados, permitindo chamá-los novamente com um único clique.
 
