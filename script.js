@@ -14,7 +14,8 @@ function displayLastCalls() {
             <strong>Motorista:</strong> ${call.name}<br>
             <strong>Placa:</strong> ${call.plate}<br>
             <strong>Ação:</strong> ${call.action.charAt(0).toUpperCase() + call.action.slice(1)}<br>
-            <button onclick="reCall('${call.name}', '${call.plate}', '${call.action}')">
+            <strong>Voz:</strong> ${call.voice}<br>
+            <button onclick="reCall('${call.name}', '${call.plate}', '${call.action}', '${call.voice}')">
                 <i class="fas fa-bell"></i> Chamar Novamente
             </button>
         `;
@@ -45,15 +46,15 @@ document.getElementById('plate').addEventListener('input', function(event) {
 });
 
 // Função para adicionar um chamado à lista e armazená-lo no localStorage
-function addLastCall(name, plate, action) {
+function addLastCall(name, plate, action, voice) {
     let lastCalls = JSON.parse(localStorage.getItem('lastCalls')) || [];
     console.log('Chamados antes de adicionar:', lastCalls);
 
     // Verifica se o chamado já existe para evitar duplicatas
-    const existingCallIndex = lastCalls.findIndex(call => call.name === name && call.plate === plate && call.action === action);
+    const existingCallIndex = lastCalls.findIndex(call => call.name === name && call.plate === plate && call.action === action && call.voice === voice);
     if (existingCallIndex === -1) {
         // Adiciona o novo chamado à lista
-        lastCalls.push({ name, plate, action });
+        lastCalls.push({ name, plate, action, voice });
 
         // Se houver mais de 10 chamados, remove o mais antigo
         if (lastCalls.length > 10) {
@@ -100,8 +101,8 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
 }
 
 // Função para chamar novamente o motorista
-function reCall(name, plate, action) {
-    callDriver(name, plate, action, voiceSelect.value);
+function reCall(name, plate, action, voice) {
+    callDriver(name, plate, action, ptBrVoices.findIndex(v => v.name === voice)); // Chama automaticamente ao clicar no botão
 }
 
 // Função para listar vozes disponíveis e preenchê-las no select
@@ -150,8 +151,9 @@ document.getElementById('announcementForm').addEventListener('submit', function(
         callDriver(name, plate, action, selectedVoiceIndex);
 
         // Adiciona o chamado ao localStorage
-        addLastCall(name, plate, action);
-        console.log("Chamado adicionado ao localStorage:", { name, plate, action });
+        const selectedVoice = ptBrVoices[selectedVoiceIndex].name; // Obtém o nome da voz
+        addLastCall(name, plate, action, selectedVoice); // Passa a voz utilizada
+        console.log("Chamado adicionado ao localStorage:", { name, plate, action, selectedVoice });
 
         // Limpa os campos do formulário após a chamada
         document.getElementById('announcementForm').reset();
