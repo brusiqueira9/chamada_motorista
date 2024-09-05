@@ -1,5 +1,7 @@
 const lastCallsList = document.getElementById('lastCalls');
 const clearListButton = document.getElementById('clearListButton');
+const voiceSelect = document.getElementById('voiceSelect');
+let ptBrVoices = [];
 
 // Função para exibir os últimos chamados na tela
 function displayLastCalls() {
@@ -18,22 +20,17 @@ function displayLastCalls() {
         `;
         lastCallsList.appendChild(listItem);
     });
+    console.log("Chamados exibidos na tela:", lastCalls);
 }
-
-// Chama a função para exibir os últimos chamados ao carregar a página
-displayLastCalls();
 
 // Função para formatar a placa
 function formatPlate(input) {
-    // Remove caracteres que não são letras ou números
     input = input.replace(/[^A-Z0-9]/gi, '').toUpperCase();
 
-    // Adiciona o formato "XXX-XX 99"
     if (input.length > 3) {
         input = input.slice(0, 3) + '-' + input.slice(3);
     }
-    
-    // Se a entrada for maior que 7, formata para "XXX-XX 99"
+
     if (input.length > 6) {
         input = input.slice(0, 6) + ' ' + input.slice(6, 8);
     }
@@ -47,65 +44,34 @@ document.getElementById('plate').addEventListener('input', function(event) {
     event.target.value = formattedPlate;
 });
 
-document.getElementById('announcementForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const name = document.getElementById('name').value.trim();
-    const plate = document.getElementById('plate').value.trim();
-    const action = document.getElementById('action').value;
-
-    if (name && plate && action) {
-        callDriver(name, plate, action); // Chama a função para fazer a chamada
-
-        // Limpa os campos do formulário após a chamada
-        document.getElementById('announcementForm').reset();
-
-        // Adiciona o chamado ao localStorage
-        addLastCall(name, plate, action);
-
-        // Feedback visual
-        const button = event.target.querySelector('button');
-        button.innerHTML = '<i class="fas fa-check"></i> Chamado!'; // Ícone de sucesso
-        button.disabled = true;
-
-        setTimeout(() => {
-            button.innerHTML = '<i class="fas fa-bell"></i> Chamar Motorista';
-            button.disabled = false;
-        }, 3000); // Redefine o botão após 3 segundos
-    } else {
-        alert('Por favor, preencha todos os campos.');
-    }
-});
-
 // Função para adicionar um chamado à lista e armazená-lo no localStorage
 function addLastCall(name, plate, action) {
-    const lastCalls = JSON.parse(localStorage.getItem('lastCalls')) || [];
+    let lastCalls = JSON.parse(localStorage.getItem('lastCalls')) || [];
+    console.log('Chamados antes de adicionar:', lastCalls);
 
-    // Adiciona o novo chamado
-    lastCalls.push({ name, plate, action });
+    // Verifica se o chamado já existe para evitar duplicatas
+    const existingCallIndex = lastCalls.findIndex(call => call.name === name && call.plate === plate && call.action === action);
+    if (existingCallIndex === -1) {
+        // Adiciona o novo chamado à lista
+        lastCalls.push({ name, plate, action });
 
-    // Limita a 10 últimos chamados
-    if (lastCalls.length > 10) {
-        lastCalls.shift(); // Remove o primeiro se exceder 10
+        // Se houver mais de 10 chamados, remove o mais antigo
+        if (lastCalls.length > 10) {
+            lastCalls.shift();
+        }
+
+        // Salva a lista atualizada no localStorage
+        localStorage.setItem('lastCalls', JSON.stringify(lastCalls));
+        console.log('Chamados após adicionar:', lastCalls);
+    } else {
+        console.log('Chamado já existente, não adicionado novamente.');
     }
 
-    // Atualiza o localStorage
-    localStorage.setItem('lastCalls', JSON.stringify(lastCalls));
-
-    // Atualiza a lista na tela
-    displayLastCalls();
-}
-
-// Função para chamar novamente o motorista
-function reCall(name, plate, action) {
-    callDriver(name, plate, action); // Chama automaticamente ao clicar no botão
+    displayLastCalls(); // Atualiza a lista exibida na tela
 }
 
 // Função para chamar o motorista
-function callDriver(name, plate, action) {
-    const message = `Atenção! Chamada para ${action}, motorista ${name}. Placa ${plate}.`;
-
-    // Quebrando a mensagem em partes para adicionar pausas
+function callDriver(name, plate, action, selectedVoiceIndex) {
     const parts = [
         `Atenção!`,
         `Chamada para ${action}.`,
@@ -113,20 +79,19 @@ function callDriver(name, plate, action) {
         `Placa ${plate}.`
     ];
 
-    // Reproduz o som de atenção
-    const audio = new Audio('assets/toque.mp3'); 
+    const audio = new Audio('assets/toque.mp3');
     audio.play().then(() => {
         audio.onended = () => {
-            // Som foi reproduzido, agora executa as partes da mensagem
-            let delay = 0; // Inicializa o atraso
+            let delay = 0;
             parts.forEach(part => {
                 setTimeout(() => {
                     const speech = new SpeechSynthesisUtterance(part);
+                    speech.voice = ptBrVoices[selectedVoiceIndex];
                     speech.lang = 'pt-BR';
-                    speech.rate = 0.9; // Ajuste a velocidade aqui
+                    speech.rate = 0.9;
                     window.speechSynthesis.speak(speech);
                 }, delay);
-                delay += 2000; // Aumenta o atraso (2000 ms = 2 segundos)
+                delay += 2000; // Atraso de 2 segundos entre cada parte
             });
         };
     }).catch(error => {
@@ -134,8 +99,76 @@ function callDriver(name, plate, action) {
     });
 }
 
+// Função para chamar novamente o motorista
+function reCall(name, plate, action) {
+    callDriver(name, plate, action, voiceSelect.value);
+}
+
+// Função para listar vozes disponíveis e preenchê-las no select
+function listAvailableVoices() {
+    const voices = window.speechSynthesis.getVoices();
+    voiceSelect.innerHTML = '';
+
+    ptBrVoices = voices.filter(voice => voice.lang === 'pt-BR');
+
+    ptBrVoices.forEach((voice, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = `${voice.name} (${voice.lang}) ${voice.default ? '(Default)' : ''}`;
+        voiceSelect.appendChild(option);
+    });
+
+    if (ptBrVoices.length === 0) {
+        const option = document.createElement('option');
+        option.textContent = 'Nenhuma voz em pt-BR disponível';
+        voiceSelect.appendChild(option);
+    }
+}
+
+// Chama a função para preencher as vozes disponíveis quando forem carregadas
+window.speechSynthesis.onvoiceschanged = listAvailableVoices;
+
 // Função para limpar a lista de últimos chamados
 clearListButton.addEventListener('click', function() {
-    localStorage.removeItem('lastCalls'); // Remove os últimos chamados do localStorage
-    displayLastCalls(); // Atualiza a lista na tela
+    localStorage.removeItem('lastCalls');
+    displayLastCalls();
 });
+
+// Adiciona evento ao formulário de submissão
+document.getElementById('announcementForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const plate = document.getElementById('plate').value.trim();
+    const action = document.getElementById('action').value;
+    const selectedVoiceIndex = voiceSelect.value;
+
+    console.log("Formulário enviado com:", { name, plate, action, selectedVoiceIndex });
+
+    // Verifica se todos os campos estão preenchidos
+    if (name && plate && action && selectedVoiceIndex !== "") {
+        callDriver(name, plate, action, selectedVoiceIndex);
+
+        // Adiciona o chamado ao localStorage
+        addLastCall(name, plate, action);
+        console.log("Chamado adicionado ao localStorage:", { name, plate, action });
+
+        // Limpa os campos do formulário após a chamada
+        document.getElementById('announcementForm').reset();
+
+        const button = event.target.querySelector('button');
+        button.innerHTML = '<i class="fas fa-check"></i> Chamado!';
+        button.disabled = true;
+
+        setTimeout(() => {
+            button.innerHTML = '<i class="fas fa-bell"></i> Chamar Motorista';
+            button.disabled = false;
+        }, 3000);
+    } else {
+        alert('Por favor, preencha todos os campos.');
+        console.error("Campos não preenchidos corretamente.");
+    }
+});
+
+// Chama a função para exibir os últimos chamados ao carregar a página
+displayLastCalls();
