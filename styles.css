@@ -26,7 +26,6 @@ body {
     opacity: 1; /* Ajusta a opacidade do background (0 a 1) */
 }
 
-
 .main-container {
     display: flex;
     justify-content: space-around;
@@ -111,7 +110,6 @@ input[type="text"], select {
 input[type="text"]:focus, select:focus {
     border-color: #116837;
     box-shadow: 0 0 8px rgba(40, 167, 69, 0.5); /* Aumenta o efeito de sombra */
-    outline: none;
 }
 
 button {
@@ -124,6 +122,7 @@ button {
     font-size: 16px;
     width: 100%;
     transition: background-color 0.3s, transform 0.2s; /* Adiciona transição no botão */
+    margin-top: 20px; /* Espaço maior entre o select e o botão Chamar Motorista */
 }
 
 button:hover {
@@ -183,6 +182,7 @@ button:hover {
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s, transform 0.2s;
+    margin-top: 20px; /* Espaço maior entre o botão Limpar Lista e o botão Exportar Relatório PDF */
 }
 
 #clearListButton:hover {

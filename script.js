@@ -14,7 +14,7 @@ function displayLastCalls() {
             <strong>Motorista:</strong> ${call.name}<br>
             <strong>Placa:</strong> ${call.plate}<br>
             <strong>Ação:</strong> ${call.action.charAt(0).toUpperCase() + call.action.slice(1)}<br>
-            <strong>Voz:</strong> ${call.voice}<br>
+            <strong>Data e Hora:</strong> ${call.timestamp}<br> <!-- Adicionado campo de data e hora -->
             <button onclick="reCall('${call.name}', '${call.plate}', '${call.action}', '${call.voice}')">
                 <i class="fas fa-bell"></i> Chamar Novamente
             </button>
@@ -50,11 +50,14 @@ function addLastCall(name, plate, action, voice) {
     let lastCalls = JSON.parse(localStorage.getItem('lastCalls')) || [];
     console.log('Chamados antes de adicionar:', lastCalls);
 
+    // Captura a data e hora do chamado
+    const timestamp = new Date().toLocaleString();
+
     // Verifica se o chamado já existe para evitar duplicatas
     const existingCallIndex = lastCalls.findIndex(call => call.name === name && call.plate === plate && call.action === action && call.voice === voice);
     if (existingCallIndex === -1) {
         // Adiciona o novo chamado à lista
-        lastCalls.push({ name, plate, action, voice });
+        lastCalls.push({ name, plate, action, voice, timestamp }); // Adiciona o timestamp
 
         // Se houver mais de 10 chamados, remove o mais antigo
         if (lastCalls.length > 10) {
@@ -174,3 +177,77 @@ document.getElementById('announcementForm').addEventListener('submit', function(
 
 // Chama a função para exibir os últimos chamados ao carregar a página
 displayLastCalls();
+
+// Função para exportar relatório de chamadas em PDF
+document.getElementById('exportPdf').addEventListener('click', function() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Adiciona logo (opcional)
+    const logoURL = 'assets/logoagrocp.png'; // URL da logo
+    const logoWidth = 50; 
+    const logoHeight = 20;
+    doc.addImage(logoURL, 'PNG', 10, 10, logoWidth, logoHeight);
+
+    // Título estilizado
+    doc.setFontSize(18);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(17, 104, 55); // Cor do texto
+    doc.text("Relatório de Chamadas", 105, 30, { align: 'center' });
+
+    // Subtítulo com data e hora
+    const now = new Date();
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(100, 100, 100); // Cor do texto do subtítulo
+    doc.text(`Relatório gerado em: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`, 105, 40, { align: 'center' });
+
+    // Dados do histórico
+    const history = JSON.parse(localStorage.getItem('lastCalls')) || []; // Alterado para 'lastCalls'
+
+    // Verifica se os dados estão corretos
+    console.log('Histórico de Chamados:', history); // Log para verificar se há dados
+
+    if (history.length === 0) {
+        alert('Nenhum chamado encontrado no histórico.');
+        return; // Para o processo se não houver chamados
+    }
+
+   // Configurações da tabela com bordas e cores
+doc.autoTable({
+    startY: 50,
+    head: [['Data e Hora', 'Motorista', 'Placa', 'Ação']], // Cabeçalho
+    body: history.map(call => [
+        call.timestamp, // Data e Hora
+        call.name, // Motorista
+        formatPlate(call.plate), // Placa formatada
+        call.action.charAt(0).toUpperCase() + call.action.slice(1) // Ação formatada
+    ]),
+    theme: 'grid', // Estilo de grid
+    headStyles: { 
+        fillColor: [17, 104, 55], // Cor verde principal
+        textColor: [255, 255, 255], // Cor do texto branco
+        font: 'helvetica', 
+        fontStyle: 'bold' 
+    }, // Estilo do cabeçalho
+    styles: { 
+        fillColor: [242, 242, 242], // Cor de fundo das células
+        textColor: [100, 100, 100] // Cor do texto verde principal
+    }, // Estilo das células
+});
+
+
+    // Rodapé
+    const footerText = 'Relatório gerado automaticamente. Todos os direitos reservados.';
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(100, 100, 100); // Cor do texto do rodapé
+        doc.text(footerText, 105, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
+    }
+
+    // Salva o PDF
+    doc.save('relatorio_chamados.pdf');
+});
