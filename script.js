@@ -118,7 +118,7 @@ function listAvailableVoices() {
     ptBrVoices.forEach((voice, index) => {
         const option = document.createElement('option');
         option.value = index;
-        option.textContent = ${voice.name} (${voice.lang}) ${voice.default ? '(Default)' : ''};
+        option.textContent = `${voice.name} (${voice.lang}) ${voice.default ? '(Default)' : ''}`;
         voiceSelect.appendChild(option);
     });
 
@@ -131,7 +131,6 @@ function listAvailableVoices() {
 
 // Chama a função para preencher as vozes disponíveis quando forem carregadas
 window.speechSynthesis.onvoiceschanged = listAvailableVoices;
-
 
 // Função para limpar a lista de últimos chamados
 clearListButton.addEventListener('click', function() {
