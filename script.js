@@ -113,17 +113,12 @@ function listAvailableVoices() {
     const voices = window.speechSynthesis.getVoices();
     voiceSelect.innerHTML = '';
 
-    // Filtra vozes em português do Brasil
-    const ptBrVoices = voices.filter(voice => voice.lang === 'pt-BR');
-
-    // Recupera a voz padrão salva no localStorage, se houver
-    const savedVoiceIndex = localStorage.getItem('preferredVoiceIndex');
-    let preferredVoiceIndex = savedVoiceIndex !== null ? parseInt(savedVoiceIndex) : -1;
+    ptBrVoices = voices.filter(voice => voice.lang === 'pt-BR');
 
     ptBrVoices.forEach((voice, index) => {
         const option = document.createElement('option');
         option.value = index;
-        option.textContent = `${voice.name} (${voice.lang}) ${voice.default ? '(Default)' : ''}`;
+        option.textContent = ${voice.name} (${voice.lang}) ${voice.default ? '(Default)' : ''};
         voiceSelect.appendChild(option);
     });
 
@@ -131,16 +126,7 @@ function listAvailableVoices() {
         const option = document.createElement('option');
         option.textContent = 'Nenhuma voz em pt-BR disponível';
         voiceSelect.appendChild(option);
-    } else if (preferredVoiceIndex !== -1 && preferredVoiceIndex < ptBrVoices.length) {
-        // Seleciona automaticamente a voz preferida
-        voiceSelect.selectedIndex = preferredVoiceIndex;
     }
-
-    // Adiciona evento para salvar a voz preferida quando o usuário mudar
-    voiceSelect.addEventListener('change', () => {
-        const selectedIndex = voiceSelect.selectedIndex;
-        localStorage.setItem('preferredVoiceIndex', selectedIndex);
-    });
 }
 
 // Chama a função para preencher as vozes disponíveis quando forem carregadas
