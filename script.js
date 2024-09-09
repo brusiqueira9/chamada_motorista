@@ -59,8 +59,8 @@ function addLastCall(name, plate, action, voice) {
         // Adiciona o novo chamado à lista
         lastCalls.push({ name, plate, action, voice, timestamp }); // Adiciona o timestamp
 
-        // Se houver mais de 30 chamados, remove o mais antigo
-        if (lastCalls.length > 30) {
+        // Se houver mais de 100 chamados, remove o mais antigo
+        if (lastCalls.length > 100) {
             lastCalls.shift();
         }
 
