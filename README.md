@@ -6,10 +6,11 @@ Este é um projeto de uma aplicação web que realiza chamadas para motoristas u
 
 - Entrada do nome do motorista, placa do veículo e tipo de ação (carregamento ou descarga).
 - Seleção de diferentes vozes de IA para realizar a chamada.
-- Armazenamento dos últimos 10 chamados no `localStorage`.
+- Armazenamento dos últimos 100 chamados no `localStorage`.
 - Possibilidade de chamar motoristas novamente com base nos chamados anteriores.
 - Exibição e gerenciamento dos últimos chamados.
 - Efeitos visuais e sonoros para melhorar a experiência do usuário.
+- Relatório em PDF de todos as chamadas armazendas no localStorage com os campos Data e Hora, Nome do Motorista, Placa e Ação.
 
 ## Tecnologias Utilizadas
 
