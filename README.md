@@ -19,6 +19,7 @@ Este é um projeto de uma aplicação web que realiza chamadas para motoristas u
 - **JavaScript**: Lógica de interação, manipulação do DOM e utilização da API de síntese de fala.
 - **Font Awesome**: Ícones visuais no formulário e na interface.
 - **LocalStorage**: Armazenamento local dos últimos chamados.
+- **jsPDF**: Biblioteca JS usada para geração do relatório de chamadas.
 
 ## Como Utilizar
 
@@ -27,7 +28,7 @@ Este é um projeto de uma aplicação web que realiza chamadas para motoristas u
 3. Preencha o nome do motorista, a placa do veículo e escolha a ação (carregamento ou descarga).
 4. Selecione uma das vozes disponíveis em português do Brasil no dropdown.
 5. Clique no botão **"Chamar Motorista"** para ouvir o anúncio.
-6. Os últimos 10 chamados serão listados na seção **"Últimos Chamados"**, permitindo chamá-los novamente ou limpar a lista.
+6. Os últimos 100 chamados serão listados na seção **"Últimos Chamados"**, permitindo chamá-los novamente ou limpar a lista.
 
 ## Melhoria de Vozes
 Para utilizar vozes mais realistas, como a Microsoft Thalita Online (Natural), certifique-se de que o navegador suporte a API de síntese de fala (SpeechSynthesis).
