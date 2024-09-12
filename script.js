@@ -82,15 +82,20 @@ function addLastCall(name, plate, action, voice) {
     displayLastCalls();
 }
 
-// Função para chamar o motorista (com leitura letra por letra da placa)
+// Função para chamar o motorista (com leitura do nome e placa duas vezes)
 function callDriver(name, plate, action, selectedVoiceIndex) {
     const plateWithoutDash = plate.replace(/-/g, ''); // Remove o traço da placa
-    const letters = plateWithoutDash; // Mantém todas as letras e números da placa
+
+    // Formata a placa para adicionar espaços entre as letras e manter o hífen
+    const formattedPlate = plateWithoutDash.replace(/([A-Z]+)/g, (match) => {
+        return match.split('').join(' '); // Adiciona espaço entre as letras
+    }).replace(/(\d+)/g, (match) => {
+        return match.split('').join(' '); // Adiciona espaço entre os números
+    }).replace(/ /g, ' ').replace(/(\S{3})(\S)/, '$1-$2'); // Adiciona o hífen após os 3 primeiros caracteres
 
     const parts = [
         `Atenção!`,
         `Chamada para ${action}.`,
-        `Motorista ${name}.`,
     ];
 
     const audio = new Audio('assets/toque.mp3');
@@ -105,26 +110,30 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
                 window.speechSynthesis.speak(speech);
             });
 
-            // Pronunciar "PLACA"
-            const speechPlate = new SpeechSynthesisUtterance('Placa');
-            speechPlate.voice = ptBrVoices[selectedVoiceIndex];
-            speechPlate.lang = 'pt-BR';
-            speechPlate.rate = 0.9;
-            window.speechSynthesis.speak(speechPlate);
+            // Pronunciar o nome do motorista e a placa duas vezes
+            for (let i = 0; i < 2; i++) {
+                // Pronunciar "Motorista [nome]"
+                const nameSpeech = new SpeechSynthesisUtterance(`Motorista ${name}`);
+                nameSpeech.voice = ptBrVoices[selectedVoiceIndex];
+                nameSpeech.lang = 'pt-BR';
+                nameSpeech.rate = 0.8; // Velocidade da voz
+                window.speechSynthesis.speak(nameSpeech);
 
-            // Pronunciar cada letra da placa sem intervalo
-            for (let char of letters) {
-                const charSpeech = new SpeechSynthesisUtterance(char);
-                charSpeech.voice = ptBrVoices[selectedVoiceIndex];
-                charSpeech.lang = 'pt-BR';
-                charSpeech.rate = 0.9;
-                window.speechSynthesis.speak(charSpeech);
+                // Pronunciar "Placa [placa]"
+                const plateSpeech = new SpeechSynthesisUtterance(`Placa ${formattedPlate}`);
+                plateSpeech.voice = ptBrVoices[selectedVoiceIndex];
+                plateSpeech.lang = 'pt-BR';
+                plateSpeech.rate = 0.8; // Velocida da voz
+                window.speechSynthesis.speak(plateSpeech);
             }
         };
     }).catch(error => {
         console.error('Erro ao reproduzir o som:', error);
     });
 }
+
+
+
 
 
 
