@@ -85,8 +85,7 @@ function addLastCall(name, plate, action, voice) {
 // Função para chamar o motorista (com leitura letra por letra da placa)
 function callDriver(name, plate, action, selectedVoiceIndex) {
     const plateWithoutDash = plate.replace(/-/g, ''); // Remove o traço da placa
-    const letters = plateWithoutDash.slice(0, 3); // Extrai as 3 primeiras letras
-    const numbers = plateWithoutDash.slice(3); // Extrai os números restantes
+    const letters = plateWithoutDash; // Mantém todas as letras e números da placa
 
     const parts = [
         `Atenção!`,
@@ -111,7 +110,7 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
                 delay += 2000; // Atraso de 2 segundos entre cada parte
             });
 
-            // Pronunciar "PLACA" e depois a placa
+            // Pronunciar "PLACA"
             const speechPlate = new SpeechSynthesisUtterance('Placa');
             speechPlate.voice = ptBrVoices[selectedVoiceIndex];
             speechPlate.lang = 'pt-BR';
@@ -122,7 +121,7 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
                 
                 // Atraso adicional para garantir que "PLACA" seja falado antes de iniciar a placa
                 setTimeout(() => {
-                    // Pronunciar letras da placa sem atraso entre elas
+                    // Pronunciar cada letra da placa sem intervalo
                     for (let char of letters) {
                         const charSpeech = new SpeechSynthesisUtterance(char);
                         charSpeech.voice = ptBrVoices[selectedVoiceIndex];
@@ -130,19 +129,6 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
                         charSpeech.rate = 0.9;
                         window.speechSynthesis.speak(charSpeech);
                     }
-
-                    // Pronunciar números em pares após as letras
-                    setTimeout(() => {
-                        const numberPairs = [];
-                        for (let i = 0; i < numbers.length; i += 2) {
-                            numberPairs.push(numbers.slice(i, i + 2));
-                        }
-                        const numbersSpeech = new SpeechSynthesisUtterance(numberPairs.join(' '));
-                        numbersSpeech.voice = ptBrVoices[selectedVoiceIndex];
-                        numbersSpeech.lang = 'pt-BR';
-                        numbersSpeech.rate = 0.9;
-                        window.speechSynthesis.speak(numbersSpeech);
-                    }, 500); // Atraso após a última letra falada
                 }, 500); // Atraso de 0.5 segundos após "PLACA"
             }, delay); // Atraso total para "PLACA" após partes da chamada
         };
@@ -150,6 +136,7 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
         console.error('Erro ao reproduzir o som:', error);
     });
 }
+
 
 
 
