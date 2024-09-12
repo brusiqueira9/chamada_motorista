@@ -96,18 +96,13 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
     const audio = new Audio('assets/toque.mp3');
     audio.play().then(() => {
         audio.onended = () => {
-            let delay = 0;
-
             // Falar partes da chamada
             parts.forEach(part => {
-                setTimeout(() => {
-                    const speech = new SpeechSynthesisUtterance(part);
-                    speech.voice = ptBrVoices[selectedVoiceIndex];
-                    speech.lang = 'pt-BR';
-                    speech.rate = 0.9;
-                    window.speechSynthesis.speak(speech);
-                }, delay);
-                delay += 2000; // Atraso de 2 segundos entre cada parte
+                const speech = new SpeechSynthesisUtterance(part);
+                speech.voice = ptBrVoices[selectedVoiceIndex];
+                speech.lang = 'pt-BR';
+                speech.rate = 0.9;
+                window.speechSynthesis.speak(speech);
             });
 
             // Pronunciar "PLACA"
@@ -115,22 +110,16 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
             speechPlate.voice = ptBrVoices[selectedVoiceIndex];
             speechPlate.lang = 'pt-BR';
             speechPlate.rate = 0.9;
+            window.speechSynthesis.speak(speechPlate);
 
-            setTimeout(() => {
-                window.speechSynthesis.speak(speechPlate);
-                
-                // Atraso adicional para garantir que "PLACA" seja falado antes de iniciar a placa
-                setTimeout(() => {
-                    // Pronunciar cada letra da placa sem intervalo
-                    for (let char of letters) {
-                        const charSpeech = new SpeechSynthesisUtterance(char);
-                        charSpeech.voice = ptBrVoices[selectedVoiceIndex];
-                        charSpeech.lang = 'pt-BR';
-                        charSpeech.rate = 0.9;
-                        window.speechSynthesis.speak(charSpeech);
-                    }
-                }, 500); // Atraso de 0.5 segundos após "PLACA"
-            }, delay); // Atraso total para "PLACA" após partes da chamada
+            // Pronunciar cada letra da placa sem intervalo
+            for (let char of letters) {
+                const charSpeech = new SpeechSynthesisUtterance(char);
+                charSpeech.voice = ptBrVoices[selectedVoiceIndex];
+                charSpeech.lang = 'pt-BR';
+                charSpeech.rate = 0.9;
+                window.speechSynthesis.speak(charSpeech);
+            }
         };
     }).catch(error => {
         console.error('Erro ao reproduzir o som:', error);
