@@ -133,7 +133,7 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
                             charSpeech.rate = 0.9;
                             window.speechSynthesis.speak(charSpeech);
                         }, letterDelay);
-                        letterDelay += 500; // Atraso de 0.5 segundos entre cada letra
+                        letterDelay += 100; // Atraso de 0.1 segundos entre cada letra
                     }
 
                     // Pronunciar números em pares após as letras
