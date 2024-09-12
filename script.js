@@ -122,18 +122,13 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
                 
                 // Atraso adicional para garantir que "PLACA" seja falado antes de iniciar a placa
                 setTimeout(() => {
-                    let letterDelay = 0;
-
-                    // Pronunciar letras da placa com intervalo
+                    // Pronunciar letras da placa sem atraso entre elas
                     for (let char of letters) {
-                        setTimeout(() => {
-                            const charSpeech = new SpeechSynthesisUtterance(char);
-                            charSpeech.voice = ptBrVoices[selectedVoiceIndex];
-                            charSpeech.lang = 'pt-BR';
-                            charSpeech.rate = 0.9;
-                            window.speechSynthesis.speak(charSpeech);
-                        }, letterDelay);
-                        letterDelay += 50; // Atraso de 0.1 segundos entre cada letra
+                        const charSpeech = new SpeechSynthesisUtterance(char);
+                        charSpeech.voice = ptBrVoices[selectedVoiceIndex];
+                        charSpeech.lang = 'pt-BR';
+                        charSpeech.rate = 0.9;
+                        window.speechSynthesis.speak(charSpeech);
                     }
 
                     // Pronunciar números em pares após as letras
@@ -147,7 +142,7 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
                         numbersSpeech.lang = 'pt-BR';
                         numbersSpeech.rate = 0.9;
                         window.speechSynthesis.speak(numbersSpeech);
-                    }, letterDelay + 500); // Atraso após a última letra falada
+                    }, 500); // Atraso após a última letra falada
                 }, 500); // Atraso de 0.5 segundos após "PLACA"
             }, delay); // Atraso total para "PLACA" após partes da chamada
         };
@@ -155,6 +150,7 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
         console.error('Erro ao reproduzir o som:', error);
     });
 }
+
 
 
 
