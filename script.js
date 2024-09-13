@@ -1,9 +1,15 @@
 const lastCallsList = document.getElementById('lastCalls');
 const clearListButton = document.getElementById('clearListButton');
 const voiceSelect = document.getElementById('voiceSelect');
-let ptBrVoices = [];
+const plateInput = document.getElementById('plate');
+const nameInput = document.getElementById('name');
+const suggestionsContainer = document.getElementById('suggestions');
+const fileInput = document.getElementById('uploadFile');
 
-console.log("Elementos iniciais capturados:", { lastCallsList, clearListButton, voiceSelect });
+let ptBrVoices = [];
+let driversData = []; // Dados de motoristas e placas
+
+console.log("Elementos iniciais capturados:", { lastCallsList, clearListButton, voiceSelect, fileInput });
 
 // Função para exibir os últimos chamados na tela
 function displayLastCalls() {
@@ -46,6 +52,68 @@ function formatPlate(input) {
     return input;
 }
 
+
+// Adiciona evento ao campo de entrada da placa
+document.getElementById('plate').addEventListener('input', function(event) {
+    console.log("Evento input na placa detectado:", event.target.value);
+    const formattedPlate = formatPlate(event.target.value);
+    event.target.value = formattedPlate;
+    console.log("Placa após formatação:", formattedPlate);
+});
+
+// Função de autocomplete para sugestões de placa
+function showSuggestions(value) {
+    console.log("Função showSuggestions chamada com:", value);
+    suggestionsContainer.innerHTML = '';
+    if (value.length < 3) return; // Mostrar sugestões apenas após 3 caracteres
+
+    const filteredData = driversData.filter(driver => driver.plate.startsWith(value.toUpperCase()));
+    filteredData.forEach(driver => {
+        const suggestion = document.createElement('div');
+        suggestion.classList.add('suggestion-item');
+        suggestion.textContent = `${driver.plate} - ${driver.name}`;
+        suggestion.addEventListener('click', () => {
+            plateInput.value = driver.plate;
+            nameInput.value = driver.name;
+            suggestionsContainer.innerHTML = ''; // Limpar sugestões após seleção
+        });
+        suggestionsContainer.appendChild(suggestion);
+    });
+}
+
+// Função para ler o arquivo Excel e processar os dados de motoristas
+function processExcel(file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const data = new Uint8Array(event.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+        driversData = jsonData.map(row => ({
+            name: row['Nome'],
+            plate: row['Placa'].toUpperCase()
+        }));
+        console.log("Dados de motoristas e placas processados:", driversData);
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+// Evento para carregar o arquivo Excel
+fileInput.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        processExcel(file);
+        alert('Arquivo Excel carregado com sucesso!');
+    }
+});
+
+// Evento de input no campo de placa para mostrar sugestões
+plateInput.addEventListener('input', function(event) {
+    const formattedPlate = formatPlate(event.target.value);
+    event.target.value = formattedPlate;
+    showSuggestions(formattedPlate);
+});
 
 // Adiciona evento ao campo de entrada da placa
 document.getElementById('plate').addEventListener('input', function(event) {
