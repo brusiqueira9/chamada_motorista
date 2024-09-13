@@ -70,8 +70,9 @@ body {
 }
 
 .container:hover, .list-container:hover {
-    transform: scale(1.02); /* Efeito de zoom ao passar o mouse */
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2); /* Aumenta a sombra para um efeito de destaque */
 }
+
 
 h1 {
     color: #116837;
@@ -186,20 +187,22 @@ button:hover {
     background-color: #c82333; /* Cor vermelha mais escura ao passar o mouse */
 }
 
-/* Estilos para a caixa de sugestões */
 #suggestions {
-    position: absolute; /* Para posicionar corretamente em relação ao campo de entrada */
-    background-color: #ffffff; /* Fundo branco para contraste */
-    max-height: 200px; /* Altura máxima para a caixa */
-    width: 100%; /* Largura completa do contêiner pai */
-    overflow-y: auto; /* Permite rolagem vertical se houver muitas sugestões */
-    z-index: 1000; /* Coloca a lista acima de outros elementos */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Sombra suave para dar profundidade */
-    border-radius: 8px; /* Bordas arredondadas para suavizar o visual */
-    margin-top: 5px; /* Espaço entre o campo de entrada e a lista */
-    padding: 0; /* Remove qualquer padding que possa interferir */
-    border: none; /* Remove a borda para evitar a linha cinza */
+    position: absolute;
+    background-color: #ffffff;
+    max-height: 200px;
+    max-width: 25vw; /* Garante que a caixa não ultrapasse a largura da tela */
+    width: calc(100% - 20px); /* Ajuste se necessário para não cortar o conteúdo */
+    box-sizing: border-box;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    margin-top: 5px;
+    padding: 0;
+    border: none;
 }
+
 
 /* Estilo dos itens de sugestão */
 .suggestion-item {
@@ -253,6 +256,7 @@ button:hover {
     background: #888; /* Cor do thumb quando o mouse está sobre ele */
 }
 
+
 /* Estilo simplificado para a ajuda da placa */
 #plateHelp {
     font-size: 14px; /* Tamanho da fonte */
@@ -271,19 +275,14 @@ button:hover {
 
 .form-group {
     margin-bottom: 20px; /* Espaçamento inferior */
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
-label {
-    font-weight: 600; /* Fonte mais forte */
-    color: #333; /* Cor escura para contraste */
-    margin-bottom: 8px; /* Espaço abaixo do label */
-    display: block; /* Coloca o label em uma nova linha */
-}
+
 
 input[type="file"] {
     display: block; /* Coloca o input em uma nova linha */
-    width: 100%; /* Ocupa 100% da largura do contêiner */
+    width: 90%; /* Ocupa 100% da largura do contêiner */
     padding: 10px 15px; /* Espaçamento interno */
     margin-top: 5px; /* Espaço acima do input */
     border: 1px solid #ddd; /* Borda cinza clara */
@@ -313,5 +312,5 @@ input[type="file"]::file-selector-button {
 }
 
 input[type="file"]::file-selector-button:hover {
-    background-color: #003417; /* Cor do botão ao passar o mouse */
+    background-color: #218838; /* Cor do botão ao passar o mouse */
 }
