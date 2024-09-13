@@ -86,9 +86,6 @@ h2 {
     font-weight: 600;
 }
 
-.form-group {
-    margin-bottom: 20px;
-}
 
 label {
     display: block;
@@ -187,4 +184,134 @@ button:hover {
 
 #clearListButton:hover {
     background-color: #c82333; /* Cor vermelha mais escura ao passar o mouse */
+}
+
+/* Estilos para a caixa de sugestões */
+#suggestions {
+    position: absolute; /* Para posicionar corretamente em relação ao campo de entrada */
+    background-color: #ffffff; /* Fundo branco para contraste */
+    max-height: 200px; /* Altura máxima para a caixa */
+    width: 100%; /* Largura completa do contêiner pai */
+    overflow-y: auto; /* Permite rolagem vertical se houver muitas sugestões */
+    z-index: 1000; /* Coloca a lista acima de outros elementos */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Sombra suave para dar profundidade */
+    border-radius: 8px; /* Bordas arredondadas para suavizar o visual */
+    margin-top: 5px; /* Espaço entre o campo de entrada e a lista */
+    padding: 0; /* Remove qualquer padding que possa interferir */
+    border: none; /* Remove a borda para evitar a linha cinza */
+}
+
+/* Estilo dos itens de sugestão */
+.suggestion-item {
+    padding: 12px 16px; /* Aumenta o espaçamento interno para conforto */
+    cursor: pointer; /* Indica que é clicável */
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Transição suave ao passar o mouse */
+    color: #333; /* Cor do texto padrão */
+    font-size: 16px; /* Tamanho da fonte adequado */
+}
+
+/* Efeito de hover para itens de sugestão */
+.suggestion-item:hover {
+    background-color: #e9f5f2; /* Cor de fundo suave ao passar o mouse */
+    color: #116837; /* Mudança na cor do texto para melhorar o contraste */
+}
+
+/* Efeito de clique (ativo) nos itens de sugestão */
+.suggestion-item:active {
+    background-color: #d4f0e1; /* Cor de fundo quando o item é clicado */
+}
+
+/* Estilo para o texto destacado no item de sugestão */
+.suggestion-item strong {
+    font-weight: 700; /* Aumenta o peso da fonte para destaque */
+    color: #116837; /* Cor verde para destaque, consistente com a paleta */
+}
+
+/* Acessibilidade: foco em sugestões */
+.suggestion-item:focus {
+    outline: none; /* Remove o contorno padrão */
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.5); /* Contorno verde ao focar, melhorando a visibilidade */
+    background-color: #f1fff1; /* Fundo levemente diferente para feedback visual */
+}
+
+/* Estilo para o scrollbar (opcional, para uma aparência mais limpa) */
+#suggestions::-webkit-scrollbar {
+    width: 8px; /* Largura do scrollbar */
+}
+
+#suggestions::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Cor de fundo do track do scrollbar */
+    border-radius: 10px; /* Bordas arredondadas */
+}
+
+#suggestions::-webkit-scrollbar-thumb {
+    background: #aaa; /* Cor do thumb do scrollbar */
+    border-radius: 10px; /* Bordas arredondadas */
+}
+
+#suggestions::-webkit-scrollbar-thumb:hover {
+    background: #888; /* Cor do thumb quando o mouse está sobre ele */
+}
+
+/* Estilo simplificado para a ajuda da placa */
+#plateHelp {
+    font-size: 14px; /* Tamanho da fonte */
+    color: #555; /* Cor de texto neutra */
+    margin-top: 5px; /* Espaçamento acima */
+    padding: 4px; /* Espaço interno */
+    background-color: transparent; /* Fundo transparente */
+    border: none; /* Remove qualquer borda */
+    transition: color 0.3s ease; /* Transição suave para a cor */
+}
+
+/* Efeito de hover para a ajuda da placa */
+#plateHelp:hover {
+    color: #116837; /* Altera a cor do texto ao passar o mouse */
+}
+
+.form-group {
+    margin-bottom: 20px; /* Espaçamento inferior */
+    margin-top: 10px;
+}
+
+label {
+    font-weight: 600; /* Fonte mais forte */
+    color: #333; /* Cor escura para contraste */
+    margin-bottom: 8px; /* Espaço abaixo do label */
+    display: block; /* Coloca o label em uma nova linha */
+}
+
+input[type="file"] {
+    display: block; /* Coloca o input em uma nova linha */
+    width: 100%; /* Ocupa 100% da largura do contêiner */
+    padding: 10px 15px; /* Espaçamento interno */
+    margin-top: 5px; /* Espaço acima do input */
+    border: 1px solid #ddd; /* Borda cinza clara */
+    border-radius: 5px; /* Bordas arredondadas */
+    background-color: #f9f9f9; /* Cor de fundo clara */
+    font-size: 16px; /* Tamanho da fonte */
+    color: #555; /* Cor do texto */
+    transition: border-color 0.3s, background-color 0.3s; /* Transições suaves */
+    cursor: pointer; /* Cursor de mão */
+}
+
+input[type="file"]:focus {
+    border-color: #4CAF50; /* Cor da borda ao focar */
+    background-color: #f0fff0; /* Cor de fundo ao focar */
+    outline: none; /* Remove o contorno padrão */
+}
+
+input[type="file"]::file-selector-button {
+    background-color: #116837; /* Cor de fundo do botão */
+    color: white; /* Cor do texto do botão */
+    padding: 10px 10px; /* Espaçamento interno do botão */
+    border: none; /* Remove borda padrão */
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer; /* Cursor de mão */
+    transition: background-color 0.3s; /* Transição suave */
+    font-weight: 500; /* Peso da fonte */
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: #003417; /* Cor do botão ao passar o mouse */
 }
