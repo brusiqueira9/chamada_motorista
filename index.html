@@ -7,31 +7,24 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="assets/box-truck.png" type="image/x-icon">
-    
 </head>
 <body>
     <div class="background"></div>
     <div class="main-container">
-        
         <div class="container">
             <h1><i class="fas fa-truck"></i> Chamada de Motorista</h1>
-
-            <form id="announcementForm">
+            <form id="announcementForm" aria-labelledby="announcementFormLabel">
                 <div class="form-group">
                     <label for="plate"><i class="fas fa-car"></i> Placa do Veículo:</label>
                     <input type="text" id="plate" name="plate" placeholder="Ex: YGH-5566" required aria-describedby="plateHelp">
                     <div id="suggestions" class="suggestions" role="list" aria-label="Sugestões de placas"></div>
                     <small id="plateHelp" class="form-text text-muted">Digite os primeiros caracteres da placa para ver sugestões.</small>
                 </div>
-                
-                
-                
+
                 <div class="form-group">
                     <label for="name"><i class="fas fa-user"></i> Nome do Motorista:</label>
                     <input type="text" id="name" name="name" placeholder="Digite o nome do motorista" required>
                 </div>
-
-                
 
                 <div class="form-group">
                     <label for="action"><i class="fas fa-exchange-alt"></i> Ação:</label>
@@ -43,30 +36,34 @@
 
                 <label for="voiceSelect">
                     <i class="fas fa-volume-up"></i> Escolha a voz:
-                  </label>
+                </label>
                 <select id="voiceSelect">
                     <!-- As opções de voz serão preenchidas dinamicamente -->
                 </select>
 
                 <button type="submit"><i class="fas fa-bell"></i> Chamar Motorista</button>
-                
             </form>
         </div>
 
         <div class="list-container">
             <h2><i class="fas fa-list"></i> Últimas Chamadas</h2>
             <ul id="lastCalls"></ul>
-            <button id="clearListButton"><i class="fas fa-trash-alt"></i> Limpar Lista</button>
+            <button id="clearListButton" onclick="confirmClearList()"><i class="fas fa-trash-alt"></i> Limpar Lista</button>
             <button id="exportPdf"><i class="fas fa-file-pdf"></i> Gerar Relatório</button>
-            
-            <div class="form-group">
-                <label for="uploadFile"><i class="fas fa-file-excel"></i> Importar Arquivo Excel:</label>
-                <input type="file" id="uploadFile" name="uploadFile" accept=".xlsx, .xls" />
-            </div>
 
+            <div class="form-group">
+                <label for="uploadFile" class="upload-button">
+                    <i class="fas fa-file-excel upload-icon"></i>
+                    Importar Arquivo
+                </label>
+                <input type="file" id="uploadFile" name="uploadFile" accept=".xlsx, .xls" />
+                <p id="fileName" class="file-name"></p>
+
+            </div>
+            
         </div>
     </div>
-    
+
     <script src="script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
