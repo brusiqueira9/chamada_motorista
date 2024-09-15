@@ -292,25 +292,41 @@ displayLastCalls();
 document.getElementById('exportPdf').addEventListener('click', function() {
     console.log("Botão de exportar PDF clicado.");
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+    const doc = new jsPDF('p', 'mm', 'a4'); // A4 profissional
 
-    const logoURL = 'assets/logoagrocp.png'; // URL da logo
-    const logoWidth = 50; 
-    const logoHeight = 20;
+    // Adicionando a logo no topo com ajuste de proporções
+    const logoURL = 'assets/logoagrocp.png';
+    const logoWidth = 40;
+    const logoHeight = 15;
     doc.addImage(logoURL, 'PNG', 10, 10, logoWidth, logoHeight);
     console.log("Logo adicionada ao PDF.");
 
-    doc.setFontSize(18);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(17, 104, 55); 
-    doc.text("Relatório de Chamadas", 105, 30, { align: 'center' });
+    // Definindo margens e espaçamentos
+    const marginTop = 30;
+    const marginLeft = 20;
+    const marginRight = 20;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
 
+    // Título principal do relatório com design impactante
+    doc.setFontSize(24);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(17, 104, 55); // Cor padrão #116837
+    doc.text("Relatório de Chamadas", pageWidth / 2, marginTop, { align: 'center' });
+
+    // Linha decorativa abaixo do título
+    doc.setDrawColor(17, 104, 55); // Cor padrão #116837
+    doc.setLineWidth(0.5);
+    doc.line(marginLeft, marginTop + 5, pageWidth - marginRight, marginTop + 5);
+
+    // Subtítulo com data e hora de geração
     const now = new Date();
     doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
+    doc.setFont("helvetica", "italic");
     doc.setTextColor(100, 100, 100);
-    doc.text(`Relatório gerado em: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`, 105, 40, { align: 'center' });
+    doc.text(`Gerado em: ${now.toLocaleDateString()} às ${now.toLocaleTimeString()}`, pageWidth / 2, marginTop + 12, { align: 'center' });
 
+    // Verificando histórico de chamadas
     const history = JSON.parse(localStorage.getItem('lastCalls')) || [];
     console.log('Histórico de Chamados:', history);
 
@@ -319,6 +335,12 @@ document.getElementById('exportPdf').addEventListener('click', function() {
         console.error("Histórico de chamados está vazio.");
         return;
     }
+
+    // Seção de informações gerais com separador
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(17, 104, 55); // Cor padrão #116837
+    doc.text("Detalhes do Histórico", marginLeft, marginTop + 25);
 
     doc.autoTable({
         startY: 50,
@@ -343,6 +365,7 @@ document.getElementById('exportPdf').addEventListener('click', function() {
     });
     console.log("Tabela de histórico adicionada ao PDF.");
 
+    // Adicionando rodapé com linha e número da página
     const footerText = 'Relatório gerado automaticamente. Todos os direitos reservados.';
     const pageCount = doc.internal.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
@@ -350,10 +373,38 @@ document.getElementById('exportPdf').addEventListener('click', function() {
         doc.setFontSize(10);
         doc.setFont("helvetica", "normal");
         doc.setTextColor(100, 100, 100);
-        doc.text(footerText, 105, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
-        console.log(`Rodapé adicionado à página ${i} do PDF.`);
+
+        // Linha separadora no rodapé
+        doc.setDrawColor(180, 180, 180);
+        doc.line(marginLeft, pageHeight - 20, pageWidth - marginRight, pageHeight - 20);
+
+        // Texto do rodapé
+        doc.text(footerText, pageWidth / 2, pageHeight - 15, { align: 'center' });
+
+        // Número da página
+        doc.text(`Página ${i} de ${pageCount}`, pageWidth - marginRight, pageHeight - 15, { align: 'right' });
+        console.log(`Rodapé e número da página ${i} adicionados ao PDF.`);
     }
 
-    doc.save('relatorio_chamados.pdf');
-    console.log("PDF salvo como 'relatorio_chamados.pdf'.");
+    // Salvando o arquivo PDF
+    doc.save('relatorio_chamadas.pdf');
+    console.log("PDF salvo.");
 });
+
+
+
+
+//Confirmação de arquivo de upload
+document.getElementById('uploadFile').addEventListener('change', function(event) {
+    const fileInput = event.target;
+    const fileNameElement = document.getElementById('fileName');
+    const fileName = fileInput.files.length ? fileInput.files[0].name : 'Nenhum arquivo selecionado';
+    
+    fileNameElement.textContent = `Arquivo carregado: ${fileName}`;
+    
+    // Adiciona a classe 'visible' para a animação
+    if (!fileNameElement.classList.contains('visible')) {
+        fileNameElement.classList.add('visible');
+    }
+});
+
