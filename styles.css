@@ -301,7 +301,7 @@ button:hover {
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s, transform 0.2s;
-    width: 93%;
+    width: 94%;
     margin-top: 20px;
     justify-content: center; /* Centraliza o conteúdo no botão */
 }
