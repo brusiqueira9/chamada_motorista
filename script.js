@@ -187,25 +187,21 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
                 nameSpeech.rate = 0.8; // Velocidade da voz
                 window.speechSynthesis.speak(nameSpeech);
 
-                // Pronunciar "Placa [placa]"
+                // Adicionar uma pausa de 100ms antes de falar a placa
+                setTimeout(() => {
+                // Pronunciar a placa
                 const plateSpeech = new SpeechSynthesisUtterance(`Placa ${formattedPlate}`);
                 plateSpeech.voice = ptBrVoices[selectedVoiceIndex];
                 plateSpeech.lang = 'pt-BR';
                 plateSpeech.rate = 0.8; // Velocida da voz
                 window.speechSynthesis.speak(plateSpeech);
+                }, 100); // 100ms de pausa
             }
         };
     }).catch(error => {
         console.error('Erro ao reproduzir o som:', error);
     });
 }
-
-
-
-
-
-
-
 
 // Função para chamar novamente o motorista
 function reCall(name, plate, action, voice) {
