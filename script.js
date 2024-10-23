@@ -181,14 +181,14 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
             // Pronunciar o nome do motorista e a placa duas vezes
             for (let i = 0; i < 2; i++) {
                 // Pronunciar "Motorista [nome]"
-                const nameSpeech = new SpeechSynthesisUtterance('Motorista ${name}');
+                const nameSpeech = new SpeechSynthesisUtterance(Motorista ${name});
                 nameSpeech.voice = ptBrVoices[selectedVoiceIndex];
                 nameSpeech.lang = 'pt-BR';
                 nameSpeech.rate = 0.8; // Velocidade da voz
                 window.speechSynthesis.speak(nameSpeech);
 
                 // Pronunciar "Placa [placa]"
-                const plateSpeech = new SpeechSynthesisUtterance('Placa ${formattedPlate}');
+                const plateSpeech = new SpeechSynthesisUtterance(Placa ${formattedPlate});
                 plateSpeech.voice = ptBrVoices[selectedVoiceIndex];
                 plateSpeech.lang = 'pt-BR';
                 plateSpeech.rate = 0.8; // Velocida da voz
