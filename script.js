@@ -181,31 +181,27 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
             // Pronunciar o nome do motorista e a placa duas vezes
             for (let i = 0; i < 2; i++) {
                 // Pronunciar "Motorista [nome]"
-                const nameSpeech = new SpeechSynthesisUtterance(Motorista ${name});
+                const nameSpeech = new SpeechSynthesisUtterance(`Motorista ${name}`);
                 nameSpeech.voice = ptBrVoices[selectedVoiceIndex];
                 nameSpeech.lang = 'pt-BR';
                 nameSpeech.rate = 0.8; // Velocidade da voz
                 window.speechSynthesis.speak(nameSpeech);
 
-                // Pronunciar "Placa [placa]"
-                const plateSpeech = new SpeechSynthesisUtterance(Placa ${formattedPlate});
+                // Adicionar uma pausa de 100ms antes de falar a placa
+                setTimeout(() => {
+                // Pronunciar a placa
+                const plateSpeech = new SpeechSynthesisUtterance(`Placa ${formattedPlate}`);
                 plateSpeech.voice = ptBrVoices[selectedVoiceIndex];
                 plateSpeech.lang = 'pt-BR';
                 plateSpeech.rate = 0.8; // Velocida da voz
                 window.speechSynthesis.speak(plateSpeech);
+                }, 100); // 100ms de pausa
             }
         };
     }).catch(error => {
         console.error('Erro ao reproduzir o som:', error);
     });
 }
-
-
-
-
-
-
-
 
 // Função para chamar novamente o motorista
 function reCall(name, plate, action, voice) {
@@ -390,6 +386,9 @@ document.getElementById('exportPdf').addEventListener('click', function() {
     doc.save('relatorio_chamadas.pdf');
     console.log("PDF salvo.");
 });
+
+
+
 
 //Confirmação de arquivo de upload
 document.getElementById('uploadFile').addEventListener('change', function(event) {
