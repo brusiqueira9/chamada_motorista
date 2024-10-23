@@ -159,7 +159,7 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
         return match.split('').join(' '); // Adiciona espaço entre as letras
     }).replace(/(\d+)/g, (match) => {
         return match.split('').join(' '); // Adiciona espaço entre os números
-    }).replace(/ /g, ' ').replace(/(\S{3})(\S)/, '$1-$2'); // Adiciona o hífen após os 3 primeiros caracteres
+    }).replace(/(\S{3})(\S)/, '$1-$2'); // Adiciona o hífen após os 3 primeiros caracteres
 
     const parts = [
         `Atenção!`,
@@ -187,15 +187,12 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
                 nameSpeech.rate = 0.8; // Velocidade da voz
                 window.speechSynthesis.speak(nameSpeech);
 
-                // Adicionar uma pausa de 100ms antes de falar a placa
-                setTimeout(() => {
-                // Pronunciar a placa
+                // Pronunciar "Placa [placa]"
                 const plateSpeech = new SpeechSynthesisUtterance(`Placa ${formattedPlate}`);
                 plateSpeech.voice = ptBrVoices[selectedVoiceIndex];
                 plateSpeech.lang = 'pt-BR';
-                plateSpeech.rate = 0.8; // Velocida da voz
+                plateSpeech.rate = 0.8; // Velocidade da voz
                 window.speechSynthesis.speak(plateSpeech);
-                }, 100); // 100ms de pausa
             }
         };
     }).catch(error => {
