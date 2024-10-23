@@ -391,9 +391,6 @@ document.getElementById('exportPdf').addEventListener('click', function() {
     console.log("PDF salvo.");
 });
 
-
-
-
 //Confirmação de arquivo de upload
 document.getElementById('uploadFile').addEventListener('change', function(event) {
     const fileInput = event.target;
