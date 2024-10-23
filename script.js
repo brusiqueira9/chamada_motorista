@@ -220,45 +220,27 @@ function listAvailableVoices() {
     console.log("Vozes disponíveis:", voices);
 
     voiceSelect.innerHTML = '';
+    ptBrVoices = voices.filter(voice => voice.lang === 'pt-BR');
+    console.log("Vozes em pt-BR:", ptBrVoices);
 
-    // Filtra a voz "Microsoft Antonio Online (Natural) - Portuguese (Brazil) (pt-BR)"
-    const antonioVoice = voices.find(voice => 
-        voice.name === 'Microsoft Antonio Online (Natural)' && 
-        voice.lang === 'pt-BR'
-    );
-
-    if (antonioVoice) {
-        // Se a voz Microsoft Antonio estiver disponível, mostra somente ela
+    ptBrVoices.forEach((voice, index) => {
         const option = document.createElement('option');
-        option.value = 0; // Pode ser ajustado conforme a necessidade
-        option.textContent = `${antonioVoice.name} (${antonioVoice.lang}) ${antonioVoice.default ? '(Default)' : ''}`;
+        option.value = index;
+        option.textContent = `${voice.name} (${voice.lang}) ${voice.default ? '(Default)' : ''}`;
         voiceSelect.appendChild(option);
-        console.log("Voz Microsoft Antonio encontrada e adicionada ao select:", option);
-    } else {
-        // Se não encontrar a voz Microsoft Antonio, lista todas as vozes pt-BR disponíveis
-        const ptBrVoices = voices.filter(voice => voice.lang === 'pt-BR');
-        console.log("Vozes em pt-BR:", ptBrVoices);
+        console.log("Opção adicionada ao select:", option);
+    });
 
-        if (ptBrVoices.length > 0) {
-            ptBrVoices.forEach((voice, index) => {
-                const option = document.createElement('option');
-                option.value = index;
-                option.textContent = `${voice.name} (${voice.lang}) ${voice.default ? '(Default)' : ''}`;
-                voiceSelect.appendChild(option);
-                console.log("Opção adicionada ao select:", option);
-            });
-        } else {
-            const option = document.createElement('option');
-            option.textContent = 'Nenhuma voz em pt-BR disponível';
-            voiceSelect.appendChild(option);
-            console.log("Nenhuma voz pt-BR disponível.");
-        }
+    if (ptBrVoices.length === 0) {
+        const option = document.createElement('option');
+        option.textContent = 'Nenhuma voz em pt-BR disponível';
+        voiceSelect.appendChild(option);
+        console.log("Nenhuma voz pt-BR disponível.");
     }
 }
 
 // Chama a função para preencher as vozes disponíveis quando forem carregadas
 window.speechSynthesis.onvoiceschanged = listAvailableVoices;
-
 
 // Função para limpar a lista de últimos chamados
 clearListButton.addEventListener('click', function() {
