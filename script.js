@@ -162,8 +162,8 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
     }).replace(/ /g, ' ').replace(/(\S{3})(\S)/, '$1-$2'); // Adiciona o hífen após os 3 primeiros caracteres
 
     const parts = [
-        Atenção!,
-        Chamada para ${action}.,
+        `Atenção!`,
+        `Chamada para ${action}.`,
     ];
 
     const audio = new Audio('assets/toque.mp3');
@@ -181,14 +181,14 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
             // Pronunciar o nome do motorista e a placa duas vezes
             for (let i = 0; i < 2; i++) {
                 // Pronunciar "Motorista [nome]"
-                const nameSpeech = new SpeechSynthesisUtterance(Motorista ${name});
+                const nameSpeech = new SpeechSynthesisUtterance(`Motorista ${name}`);
                 nameSpeech.voice = ptBrVoices[selectedVoiceIndex];
                 nameSpeech.lang = 'pt-BR';
                 nameSpeech.rate = 0.8; // Velocidade da voz
                 window.speechSynthesis.speak(nameSpeech);
 
                 // Pronunciar "Placa [placa]"
-                const plateSpeech = new SpeechSynthesisUtterance(Placa ${formattedPlate});
+                const plateSpeech = new SpeechSynthesisUtterance(`Placa ${formattedPlate}`);
                 plateSpeech.voice = ptBrVoices[selectedVoiceIndex];
                 plateSpeech.lang = 'pt-BR';
                 plateSpeech.rate = 0.8; // Velocida da voz
@@ -199,6 +199,14 @@ function callDriver(name, plate, action, selectedVoiceIndex) {
         console.error('Erro ao reproduzir o som:', error);
     });
 }
+
+
+
+
+
+
+
+
 // Função para chamar novamente o motorista
 function reCall(name, plate, action, voice) {
     console.log("Função reCall chamada com:", { name, plate, action, voice });
@@ -399,4 +407,3 @@ document.getElementById('uploadFile').addEventListener('change', function(event)
         fileNameElement.classList.add('visible');
     }
 });
-
